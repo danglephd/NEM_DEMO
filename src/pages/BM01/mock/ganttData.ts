@@ -38,8 +38,8 @@ export const saveTasksToStorage = (tasks: Task[]): void => {
 
 export const mockTasks: Task[] = [
   {
-    start: new Date(2024, 3, 2), // 02-04-2024
-    end: new Date(2024, 3, 17),  // +15 days
+    start: new Date(2025, 3, 2), // 02-04-2025
+    end: new Date(2025, 3, 17),  // +15 days
     name: 'Project planning',
     id: 'project_planning',
     type: 'project',
@@ -48,8 +48,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#00BF96', barProgressSelectedColor: '#00BF96' }
   },
   {
-    start: new Date(2024, 3, 2), // 02-04-2024
-    end: new Date(2024, 3, 5),   // +3 days
+    start: new Date(2025, 3, 2), // 02-04-2025
+    end: new Date(2025, 3, 5),   // +3 days
     name: 'Marketing analysis',
     id: 'marketing_analysis',
     type: 'task',
@@ -59,8 +59,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 5), // 05-04-2024
-    end: new Date(2024, 3, 7),   // +2 days
+    start: new Date(2025, 3, 5), // 05-04-2025
+    end: new Date(2025, 3, 7),   // +2 days
     name: 'Discussions',
     id: 'discussions',
     type: 'project',
@@ -70,8 +70,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 6), // 06-04-2024
-    end: new Date(2024, 3, 9),   // +3 days
+    start: new Date(2025, 3, 6), // 06-04-2025
+    end: new Date(2025, 3, 9),   // +3 days
     name: 'Initial design',
     id: 'initial_design',
     type: 'task',
@@ -81,8 +81,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 9), // 09-04-2024
-    end: new Date(2024, 3, 9),   // 0 days
+    start: new Date(2025, 3, 9), // 09-04-2025
+    end: new Date(2025, 3, 9),   // 0 days
     name: 'Presentation',
     id: 'presentation',
     type: 'task',
@@ -96,8 +96,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 7), // 07-04-2024
-    end: new Date(2024, 3, 12),  // +5 days
+    start: new Date(2025, 3, 7), // 07-04-2025
+    end: new Date(2025, 3, 12),  // +5 days
     name: 'Prototyping',
     id: 'prototyping',
     type: 'task',
@@ -107,8 +107,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 8), // 08-04-2024
-    end: new Date(2024, 3, 17),  // +9 days
+    start: new Date(2025, 3, 8), // 08-04-2025
+    end: new Date(2025, 3, 17),  // +9 days
     name: 'User testing',
     id: 'user_testing',
     type: 'task',
@@ -118,8 +118,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 8), // 08-04-2024
-    end: new Date(2024, 3, 8),   // 0 days
+    start: new Date(2025, 3, 8), // 08-04-2025
+    end: new Date(2025, 3, 8),   // 0 days
     name: 'Approval of strategy',
     id: 'approval',
     type: 'milestone',
@@ -133,8 +133,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#9C27B0', barProgressSelectedColor: '#9C27B0' }
   },
   {
-    start: new Date(2024, 3, 2), // 02-04-2024
-    end: new Date(2024, 3, 12),  // +10 days
+    start: new Date(2025, 3, 2), // 02-04-2025
+    end: new Date(2025, 3, 12),  // +10 days
     name: 'Project management',
     id: 'project_management',
     type: 'project',
@@ -143,8 +143,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#00BF96', barProgressSelectedColor: '#00BF96' }
   },
   {
-    start: new Date(2024, 3, 2), // 02-04-2024
-    end: new Date(2024, 3, 6),   // +4 days
+    start: new Date(2025, 3, 2), // 02-04-2025
+    end: new Date(2025, 3, 6),   // +4 days
     name: 'Resource planning',
     id: 'resource_planning',
     type: 'task',
@@ -154,8 +154,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 6), // 06-04-2024
-    end: new Date(2024, 3, 8),   // +2 days
+    start: new Date(2025, 3, 6), // 06-04-2025
+    end: new Date(2025, 3, 8),   // +2 days
     name: 'Getting approval',
     id: 'getting_approval',
     type: 'task',
@@ -169,8 +169,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 8), // 08-04-2024
-    end: new Date(2024, 3, 10),  // +2 days
+    start: new Date(2025, 3, 8), // 08-04-2025
+    end: new Date(2025, 3, 10),  // +2 days
     name: 'Team introduction',
     id: 'team_introduction',
     type: 'task',
@@ -184,8 +184,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 10), // 10-04-2024
-    end: new Date(2024, 3, 12),   // +2 days
+    start: new Date(2025, 3, 10), // 10-04-2025
+    end: new Date(2025, 3, 12),   // +2 days
     name: 'Resource management',
     id: 'resource_management',
     type: 'task',
@@ -199,8 +199,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 9), // 09-04-2024
-    end: new Date(2024, 4, 15),  // +36 days
+    start: new Date(2025, 3, 9), // 09-04-2025
+    end: new Date(2025, 4, 15),  // +36 days
     name: 'Development',
     id: 'development',
     type: 'project',
@@ -209,8 +209,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#00BF96', barProgressSelectedColor: '#00BF96' }
   },
   {
-    start: new Date(2024, 3, 9), // 09-04-2024
-    end: new Date(2024, 3, 15),  // +6 days
+    start: new Date(2025, 3, 9), // 09-04-2025
+    end: new Date(2025, 3, 15),  // +6 days
     name: 'Prototyping',
     id: 'dev_prototyping',
     type: 'task',
@@ -220,8 +220,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 15), // 15-04-2024
-    end: new Date(2024, 3, 30),   // +15 days
+    start: new Date(2025, 3, 15), // 15-04-2025
+    end: new Date(2025, 3, 30),   // +15 days
     name: 'Basic functionality',
     id: 'basic_functionality',
     type: 'task',
@@ -231,8 +231,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 30), // 30-04-2024
-    end: new Date(2024, 4, 15),   // +15 days
+    start: new Date(2025, 3, 30), // 30-04-2025
+    end: new Date(2025, 4, 15),   // +15 days
     name: 'Finalizing MVA',
     id: 'finalizing_mva',
     type: 'task',
@@ -242,8 +242,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 9), // 09-04-2024
-    end: new Date(2024, 4, 25),  // +46 days
+    start: new Date(2025, 3, 9), // 09-04-2025
+    end: new Date(2025, 4, 25),  // +46 days
     name: 'Testing',
     id: 'testing',
     type: 'project',
@@ -252,8 +252,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#00BF96', barProgressSelectedColor: '#00BF96' }
   },
   {
-    start: new Date(2024, 3, 9), // 09-04-2024
-    end: new Date(2024, 3, 15),  // +6 days
+    start: new Date(2025, 3, 9), // 09-04-2025
+    end: new Date(2025, 3, 15),  // +6 days
     name: 'Testing prototype',
     id: 'testing_prototype',
     type: 'task',
@@ -268,8 +268,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 15), // 15-04-2024
-    end: new Date(2024, 3, 30),   // +15 days
+    start: new Date(2025, 3, 15), // 15-04-2025
+    end: new Date(2025, 3, 30),   // +15 days
     name: 'Testing basic functionality',
     id: 'testing_basic_functionality',
     type: 'task',
@@ -279,8 +279,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 3, 30), // 30-04-2024
-    end: new Date(2024, 4, 15),   // +15 days
+    start: new Date(2025, 3, 30), // 30-04-2025
+    end: new Date(2025, 4, 15),   // +15 days
     name: 'Testing MVA',
     id: 'testing_mva',
     type: 'task',
@@ -290,8 +290,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 4, 15), // 15-05-2024
-    end: new Date(2024, 4, 25),   // +10 days
+    start: new Date(2025, 4, 15), // 15-05-2025
+    end: new Date(2025, 4, 25),   // +10 days
     name: 'Beta testing',
     id: 'beta_testing',
     type: 'task',
@@ -301,8 +301,8 @@ export const mockTasks: Task[] = [
     styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
   },
   {
-    start: new Date(2024, 4, 25), // 25-05-2024
-    end: new Date(2024, 4, 25),   // 0 days (milestone)
+    start: new Date(2025, 4, 25), // 25-05-2025
+    end: new Date(2025, 4, 25),   // 0 days (milestone)
     name: 'Release 1.0.0',
     id: 'release',
     type: 'milestone',

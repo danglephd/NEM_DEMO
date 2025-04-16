@@ -1,0 +1,99 @@
+/* Gantt chart container styles */
+.gantt-container {
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevent container overflow */
+}
+
+/* Gantt chart scroll container */
+.gantt-scroll-container {
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable both horizontal and vertical scrolling */
+}
+
+/* Ensure the Gantt chart takes full width */
+.gantt-scroll-container > div {
+    min-width: 100%;
+    width: max-content !important;
+    height: auto !important; /* Allow content to determine height */
+    min-height: 100%;
+}
+
+/* Style for the task list container */
+.gantt-task-list-wrapper {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: white;
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+    .gantt-container {
+        margin: 0; /* Remove negative margin */
+    }
+
+    .gantt-scroll-container {
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+
+    /* Adjust task list width */
+    .gantt-task-list {
+        min-width: 155px;
+    }
+
+    /* Adjust task list cell padding */
+    .gantt-task-list-item {
+        padding: 0.25rem !important;
+    }
+
+    /* Make text smaller on mobile */
+    .gantt-task-info {
+        font-size: 0.875rem;
+    }
+
+    /* Adjust progress bar size */
+    .gantt-task-progress {
+        height: 80% !important;
+    }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) and (max-width: 991px) {
+    .gantt-container {
+        margin: 0; /* Remove negative margin */
+    }
+
+    /* Adjust task list width */
+    .gantt-task-list {
+        min-width: 200px;
+    }
+}
+
+/* Custom scrollbar for better UX */
+.gantt-scroll-container::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+    display: block;
+}
+
+.gantt-scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.gantt-scroll-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.gantt-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Ensure scrollbar is always visible on Firefox */
+.gantt-scroll-container {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+} 
