@@ -1,5 +1,5 @@
 import { Task, TaskOrEmpty } from '@wamra/gantt-task-react';
-import { loadTasksFromStorage, saveTasksToStorage } from '../../../mock/ganttData';
+import { loadTasksFromStorage, saveTasksToStorage } from '../mock/ganttData';
 
 export const updateTaskProgress = (tasks: Task[], task: Task): Task[] => {
     const updatedTasks = tasks.map((t) => {

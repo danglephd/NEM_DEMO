@@ -1,6 +1,8 @@
 import React from 'react';
 import { Task } from '@wamra/gantt-task-react';
-import { CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CButton, CFormSelect, CFormInput, CContainer, CRow, CCol } from '@coreui/react';
+import { Modal, Form, Input, Select, Button, Row, Col, DatePicker } from 'antd';
+import type { DatePickerProps } from 'antd';
+import dayjs from 'dayjs';
 
 interface NewTaskForm {
     name: string;
@@ -29,95 +31,92 @@ const NewTaskModal: React.FC<NewTaskModalProps> = ({
     onSubmit,
     isEditing = false
 }) => {
+    const handleDateChange = (field: 'start' | 'end', date: DatePickerProps['value']) => {
+        if (date) {
+            onFormChange({ [field]: date.format('YYYY-MM-DD') });
+        }
+    };
+
     return (
-        <CModal 
-            visible={visible} 
-            onClose={onClose}
-            size="lg"
-            alignment="center"
-            scrollable
+        <Modal
+            title={isEditing ? 'Edit Task' : 'Add New Task'}
+            open={visible}
+            onCancel={onClose}
+            width={800}
+            footer={[
+                <Button key="cancel" onClick={onClose}>
+                    Cancel
+                </Button>,
+                <Button key="submit" type="primary" onClick={onSubmit}>
+                    {isEditing ? 'Save Changes' : 'Add Task'}
+                </Button>
+            ]}
         >
-            <CModalHeader>
-                <CModalTitle>{isEditing ? 'Edit Task' : 'Add New Task'}</CModalTitle>
-            </CModalHeader>
-            <CModalBody>
-                <CContainer fluid>
-                    <CRow>
-                        <CCol xs={12}>
-                            <div className="mb-3">
-                                <label className="form-label">Task Name</label>
-                                <CFormInput
+            <Form layout="vertical">
+                <Row gutter={16}>
+                    <Col span={24}>
+                        <Form.Item label="Task Name">
+                            <Input
                                     value={formData.name}
                                     onChange={(e) => onFormChange({ name: e.target.value })}
                                     placeholder="Enter task name"
                                 />
-                            </div>
-                        </CCol>
-                        <CCol xs={12} md={6}>
-                            <div className="mb-3">
-                                <label className="form-label">Start Date</label>
-                                <CFormInput
-                                    type="date"
-                                    value={formData.start}
-                                    onChange={(e) => onFormChange({ start: e.target.value })}
-                                />
-                            </div>
-                        </CCol>
-                        <CCol xs={12} md={6}>
-                            <div className="mb-3">
-                                <label className="form-label">End Date</label>
-                                <CFormInput
-                                    type="date"
-                                    value={formData.end}
-                                    onChange={(e) => onFormChange({ end: e.target.value })}
-                                />
-                            </div>
-                        </CCol>
-                        <CCol xs={12} md={6}>
-                            <div className="mb-3">
-                                <label className="form-label">Task Type</label>
-                                <CFormSelect
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item label="Start Date">
+                            <DatePicker
+                                value={formData.start ? dayjs(formData.start) : null}
+                                onChange={(date) => handleDateChange('start', date)}
+                                style={{ width: '100%' }}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item label="End Date">
+                            <DatePicker
+                                value={formData.end ? dayjs(formData.end) : null}
+                                onChange={(date) => handleDateChange('end', date)}
+                                style={{ width: '100%' }}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item label="Task Type">
+                            <Select
                                     value={formData.type}
-                                    onChange={(e) => onFormChange({ type: e.target.value as 'task' | 'project' | 'milestone' })}
+                                onChange={(value) => onFormChange({ type: value as 'task' | 'project' | 'milestone' })}
                                     disabled={isEditing}
-                                >
-                                    <option value="task">Task</option>
-                                    <option value="project">Project</option>
-                                    <option value="milestone">Milestone</option>
-                                </CFormSelect>
-                            </div>
-                        </CCol>
-                        <CCol xs={12} md={6}>
-                            <div className="mb-3">
-                                <label className="form-label">Parent Task (Optional)</label>
-                                <CFormSelect
-                                    value={formData.parent || ''}
-                                    onChange={(e) => onFormChange({ parent: e.target.value || undefined })}
+                                style={{ width: '100%' }}
+                            >
+                                <Select.Option value="task">Task</Select.Option>
+                                <Select.Option value="project">Project</Select.Option>
+                                <Select.Option value="milestone">Milestone</Select.Option>
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item label="Parent Task (Optional)">
+                            <Select
+                                value={formData.parent || undefined}
+                                onChange={(value) => onFormChange({ parent: value || undefined })}
                                     disabled={isEditing}
+                                style={{ width: '100%' }}
+                                allowClear
                                 >
-                                    <option value="">No Parent</option>
                                     {tasks
                                         .filter(task => task.type === 'project')
                                         .map(task => (
-                                            <option key={task.id} value={task.id}>
+                                        <Select.Option key={task.id} value={task.id}>
                                                 {task.name}
-                                            </option>
-                                        ))}
-                                </CFormSelect>
-                            </div>
-                        </CCol>
-                    </CRow>
-                </CContainer>
-            </CModalBody>
-            <CModalFooter className="d-flex justify-content-between">
-                <CButton color="secondary" onClick={onClose}>
-                    Cancel
-                </CButton>
-                <CButton color="primary" onClick={onSubmit}>
-                    {isEditing ? 'Save Changes' : 'Add Task'}
-                </CButton>
-            </CModalFooter>
-        </CModal>
+                                        </Select.Option>
+                                    ))}
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                </Row>
+            </Form>
+        </Modal>
     );
 };
 
