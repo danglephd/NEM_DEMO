@@ -1,0 +1,180 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.sidebar {
+  min-height: 100vh;
+}
+
+.progress {
+  height: 10px;
+  margin-bottom: 5px;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+/* Override CoreUI default styles */
+.card {
+  margin-bottom: 1.5rem;
+}
+
+.header {
+  background: #fff;
+  border-bottom: 1px solid #d8dbe0;
+}
+
+.sidebar-brand {
+  background: #303c54;
+  color: #fff;
+}
+
+.nav-link {
+  color: #4f5d73;
+}
+
+.nav-link:hover {
+  color: #321fdb;
+}
+
+/* Custom styles for dashboard */
+h1 {
+  margin-bottom: 2rem;
+  color: #303c54;
+  font-weight: 600;
+}
+
+.statistic-card {
+  text-align: center;
+}
+
+.statistic-value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #321fdb;
+}
+
+.statistic-label {
+  color: #768192;
+  font-size: 0.875rem;
+}
+
+.sidebar-brand-full {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar-brand-narrow {
+  display: none;
+}
+
+.sidebar-unfoldable .sidebar-brand-full {
+  display: none;
+}
+
+.sidebar-unfoldable .sidebar-brand-narrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-icon {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
+/* Override CoreUI default styles */
+.sidebar {
+  background: #3c4b64 !important;
+}
+
+.sidebar-brand {
+  background: #303c54 !important;
+  color: #fff !important;
+  padding: 0 1rem;
+  min-height: 56px;
+}
+
+.nav-link {
+  color: #fff !important;
+  display: flex !important;
+  align-items: center;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.nav-link.active {
+  background: #321fdb !important;
+}
+
+.nav-title {
+  color: #8a93a2 !important;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+}
+
+/* Custom scrollbar for sidebar */
+.sidebar-nav {
+  scrollbar-width: thin;
+  scrollbar-color: #8a93a2 transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background-color: #8a93a2;
+  border-radius: 3px;
+}
