@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-import { Gantt, ViewMode, Task } from '@wamra/gantt-task-react';
+import { Gantt, ViewMode, Task, OnDateChange, TaskOrEmpty } from '@wamra/gantt-task-react';
 import { CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react';
-import { mockTasks, loadTasksFromStorage, handleProgressChange } from '../../mock/ganttData';
+import { initializeTasks, updateTaskProgress, updateTaskDates } from '../../services/ganttService';
 import '@wamra/gantt-task-react/dist/style.css';
 
 const BM01: React.FC = () => {
-    const [tasks, setTasks] = useState<Task[]>(loadTasksFromStorage());
+    const [tasks, setTasks] = useState<Task[]>(initializeTasks());
 
     const onProgressChange = (task: Task) => {
-        handleProgressChange(task);
-        setTasks(loadTasksFromStorage()); // Reload tasks để cập nhật UI
+        const updatedTasks = updateTaskProgress(tasks, task);
+        setTasks(updatedTasks);
+    };
+
+    const onDateChange: OnDateChange = (task: TaskOrEmpty) => {
+        const updatedTasks = updateTaskDates(tasks, task);
+        setTasks(updatedTasks);
     };
 
     return (
@@ -24,7 +29,7 @@ const BM01: React.FC = () => {
                             <Gantt
                                 tasks={tasks}
                                 viewMode={ViewMode.Day}
-                                onDateChange={() => {}}
+                                onDateChange={onDateChange}
                                 onProgressChange={onProgressChange}
                                 onDelete={() => {}}
                                 onDoubleClick={() => {}}

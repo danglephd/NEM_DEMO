@@ -36,26 +36,6 @@ export const saveTasksToStorage = (tasks: Task[]): void => {
   }
 };
 
-// Handle progress change event
-export const handleProgressChange = (task: Task): void => {
-  // Load current tasks from storage
-  const currentTasks = loadTasksFromStorage();
-  
-  // Find and update the task
-  const updatedTasks = currentTasks.map((t) => {
-    if (t.id === task.id) {
-      return {
-        ...t,
-        progress: task.progress
-      };
-    }
-    return t;
-  });
-  
-  // Save updated tasks back to storage
-  saveTasksToStorage(updatedTasks);
-};
-
 export const mockTasks: Task[] = [
   {
     start: new Date(2024, 3, 2), // 02-04-2024
