@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
 import { Gantt, ViewMode, Task, OnDateChange, TaskOrEmpty, Dependency } from '@wamra/gantt-task-react';
-import { CCard, CCardBody, CCardHeader, CCol, CRow, CButton } from '@coreui/react';
+import { Card, Row, Col, Button, Space } from 'antd';
 import { initializeTasks, updateTaskProgress, updateTaskDates, deleteTask, addNewTask, updateTask } from './services/ganttService';
 import { addDependency, removeDependency, updateDependency, isValidDependency } from './services/dependencyService';
 import DependencyModal from './Modals/DependencyModal';
@@ -39,7 +38,6 @@ const BM01: React.FC = () => {
     // Responsive adjustments
     useEffect(() => {
         const handleResize = () => {
-            // Adjust view mode based on screen width
             if (window.innerWidth < 768) {
                 setViewMode(ViewMode.Week);
                 setChartHeight('400px');
@@ -49,13 +47,8 @@ const BM01: React.FC = () => {
             }
         };
 
-        // Initial call
         handleResize();
-
-        // Add event listener
         window.addEventListener('resize', handleResize);
-
-        // Cleanup
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
@@ -124,7 +117,6 @@ const BM01: React.FC = () => {
     const handleEditTask = (task: TaskOrEmpty) => {
         console.log('onEditTask event triggered with task:', task);
         
-        // Kiểm tra xem task có phải là EmptyTask không
         if (!('id' in task)) {
             return Promise.resolve(null);
         }
@@ -134,7 +126,6 @@ const BM01: React.FC = () => {
         setIsEditing(true);
         setShowNewTaskModal(true);
         
-        // Initialize form with task data
         setNewTaskForm({
             name: fullTask.name,
             start: fullTask.start.toISOString().split('T')[0],
@@ -150,13 +141,10 @@ const BM01: React.FC = () => {
         console.log('onAddTask event triggered with task:', task);
         setShowNewTaskModal(true);
         
-        // Initialize form with the clicked position's date and set parent
         setNewTaskForm(prev => ({
             ...prev,
             start: task.start.toISOString().split('T')[0],
             end: task.end.toISOString().split('T')[0],
-            // Nếu task là project, set task đó làm parent
-            // Nếu không, set parent là parent của task được click
             parent: task.type === 'project' ? task.id : task.parent
         }));
 
@@ -172,7 +160,6 @@ const BM01: React.FC = () => {
         }
 
         if (isEditing && selectedTask) {
-            // Update existing task
             const updates: Partial<Task> = {
                 name,
                 start: new Date(start),
@@ -184,7 +171,6 @@ const BM01: React.FC = () => {
             setTasks(updatedTasks);
             console.log('Task updated successfully');
         } else {
-            // Add new task
             const newTask: Omit<Task, 'id'> = {
                 name,
                 start: new Date(start),
@@ -205,7 +191,6 @@ const BM01: React.FC = () => {
             console.log('Task added successfully');
         }
 
-        // Reset form and state
         setShowNewTaskModal(false);
         setSelectedTask(null);
         setIsEditing(false);
@@ -222,29 +207,27 @@ const BM01: React.FC = () => {
     };
 
     return (
-        <CRow>
-            <CCol xs={12}>
-                <CCard className="mb-4">
-                    <CCardHeader className="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <strong>BM01 - Gantt Chart</strong>
-                        <div className="d-flex gap-2">
-                            <CButton 
-                                color="primary" 
-                                size={window.innerWidth < 768 ? 'sm' : undefined}
+        <Row>
+            <Col span={24}>
+                <Card 
+                    title="BM01 - Gantt Chart"
+                    extra={
+                        <Space>
+                            <Button 
+                                type="primary"
                                 onClick={() => setShowNewTaskModal(true)}
                             >
                                 Add New Task
-                            </CButton>
-                            <CButton
-                                color="secondary"
-                                size={window.innerWidth < 768 ? 'sm' : undefined}
+                            </Button>
+                            <Button
                                 onClick={() => setViewMode(viewMode === ViewMode.Day ? ViewMode.Week : ViewMode.Day)}
                             >
                                 {viewMode === ViewMode.Day ? 'Week View' : 'Day View'}
-                            </CButton>
-                        </div>
-                    </CCardHeader>
-                    <CCardBody className="gantt-container" style={{ height: chartHeight }}>
+                            </Button>
+                        </Space>
+                    }
+                >
+                    <div className="gantt-container" style={{ height: chartHeight }}>
                         <div className="gantt-scroll-container">
                             <div>
                                 <Gantt
@@ -260,9 +243,9 @@ const BM01: React.FC = () => {
                                 />
                             </div>
                         </div>
-                    </CCardBody>
-                </CCard>
-            </CCol>
+                    </div>
+                </Card>
+            </Col>
 
             <DependencyModal
                 visible={showDependencyModal}
@@ -295,7 +278,7 @@ const BM01: React.FC = () => {
                 onSubmit={handleSubmitNewTask}
                 isEditing={isEditing}
             />
-        </CRow>
+        </Row>
     );
 };
 
