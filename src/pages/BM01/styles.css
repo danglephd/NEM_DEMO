@@ -4,6 +4,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden; /* Prevent container overflow */
+    position: relative;
 }
 
 /* Gantt chart scroll container */
@@ -11,6 +12,7 @@
     width: 100%;
     height: 100%;
     overflow: auto; /* Enable both horizontal and vertical scrolling */
+    position: relative;
 }
 
 /* Ensure the Gantt chart takes full width */
@@ -96,4 +98,52 @@
 .gantt-scroll-container {
     scrollbar-width: thin;
     scrollbar-color: #888 #f1f1f1;
+}
+
+/* Custom styles for Gantt table */
+.gantt-table-header {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.gantt-table-header-cell {
+    padding: 8px 16px;
+    font-weight: 500;
+    color: #262626;
+    border-right: 1px solid #e8e8e8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gantt-table-row {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.gantt-table-row:hover {
+    background-color: #fafafa;
+}
+
+.gantt-table-cell {
+    padding: 8px 16px;
+    border-right: 1px solid #f0f0f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Project task styling */
+.gantt-table-row[data-type="project"] {
+    font-weight: 500;
+    background-color: #fafafa;
+}
+
+/* Milestone task styling */
+.gantt-table-row[data-type="milestone"] {
+    font-style: italic;
+}
+
+/* Dependencies cell styling */
+.gantt-table-cell:last-child {
+    color: #1890ff;
 } 
