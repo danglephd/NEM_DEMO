@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Gantt, ViewMode, Task, OnDateChange, TaskOrEmpty, Dependency } from '@wamra/gantt-task-react';
 import { Card, Row, Col, Button, Space, message, Dropdown, Menu, Avatar } from 'antd';
 import type { MenuProps } from 'antd';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { initializeTasks, updateTaskProgress, updateTaskDates, deleteTask, addNewTask, updateTask, handleSubmitNewTask as submitNewTask } from './services/ganttService';
 import { addDependency, removeDependency, updateDependency, isValidDependency } from './services/dependencyService';
 import { mockAssignees, mockTasks, Assignee } from './mock/ganttData';
@@ -25,9 +25,9 @@ interface NewTaskForm {
     progress: number;
 }
 
-const BM01: React.FC = () => {
-    const [searchParams] = useSearchParams();
-    const navigate = useNavigate();
+const BM01: React.FC<RouteComponentProps> = (props) => {
+    const { history, location } = props;
+    const searchParams = new URLSearchParams(location.search);
     const taskId = searchParams.get('taskId');
     const [tasks, setTasks] = useState<Task[]>([]);
     const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
@@ -192,7 +192,7 @@ const BM01: React.FC = () => {
                 } else {
                     // If the current project was deleted, navigate back to project list
                     message.success('Task deleted successfully');
-                    navigate('/bm02');
+                    history.push('/bm02');
                     return;
                 }
             } else {
@@ -200,7 +200,6 @@ const BM01: React.FC = () => {
             }
 
             message.success('Task deleted successfully');
-            console.log('Task deleted successfully');
         }
     };
 
@@ -372,7 +371,7 @@ const BM01: React.FC = () => {
                             )}
                             <Button 
                                 type="link" 
-                                onClick={() => navigate('/bm02')}
+                                onClick={() => history.push('/bm02')}
                             >
                                 Back to Project List
                             </Button>

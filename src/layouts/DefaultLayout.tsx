@@ -13,18 +13,22 @@ import {
   CNavTitle,
   CSidebarToggler,
 } from '@coreui/react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { cilSpeedometer, cilList } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import Logo from '../assets/images/logo.svg';
 
-const DefaultLayout: React.FC = () => {
+interface DefaultLayoutProps {
+  children: React.ReactNode;
+}
+
+const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const [sidebarShow, setSidebarShow] = React.useState(true);
   const [sidebarUnfoldable, setSidebarUnfoldable] = React.useState(false);
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const handleNavigation = (path: string) => {
-    navigate(path);
+    history.push(path);
   };
 
   return (
@@ -73,7 +77,7 @@ const DefaultLayout: React.FC = () => {
               <CNavLink 
                 onClick={() => handleNavigation('/dashboard')} 
                 style={{ cursor: 'pointer' }}
-                active
+                active={history.location.pathname === '/dashboard'}
               >
                 <CIcon icon={cilSpeedometer} className="nav-icon" />
                 {!sidebarUnfoldable && 'Dashboard'}
@@ -83,6 +87,7 @@ const DefaultLayout: React.FC = () => {
               <CNavLink 
                 onClick={() => handleNavigation('/bm01')} 
                 style={{ cursor: 'pointer' }}
+                active={history.location.pathname === '/bm01'}
               >
                 <CIcon icon={cilList} className="nav-icon" />
                 {!sidebarUnfoldable && 'BM01'}
@@ -92,6 +97,7 @@ const DefaultLayout: React.FC = () => {
               <CNavLink 
                 onClick={() => handleNavigation('/bm02')} 
                 style={{ cursor: 'pointer' }}
+                active={history.location.pathname === '/bm02'}
               >
                 <CIcon icon={cilList} className="nav-icon" />
                 {!sidebarUnfoldable && 'BM02'}
@@ -105,7 +111,7 @@ const DefaultLayout: React.FC = () => {
         </CSidebar>
 
         <CContainer lg>
-          <Outlet />
+          {children}
         </CContainer>
       </div>
     </div>

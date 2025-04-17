@@ -184,7 +184,7 @@ export const handleSubmitNewTask = (
         return {
             updatedTasks: tasks,
             success: false,
-            message: 'Vui lòng điền đầy đủ thông tin task!'
+            message: 'Vui lòng điền đầy đủ thông tin project!'
         };
     }
 

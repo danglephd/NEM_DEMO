@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Gantt, ViewMode, Task, OnDateChange, TaskOrEmpty, Dependency } from '@wamra/gantt-task-react';
 import { Card, Row, Col, Button, Space, message, Dropdown, Menu, Avatar } from 'antd';
 import type { MenuProps } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { initializeTasks, updateTaskProgress, updateTaskDates, deleteTask, addNewTask, updateTask, handleSubmitNewTask as submitNewTask } from './services/ganttService';
 import { addDependency, removeDependency, updateDependency, isValidDependency } from './services/dependencyService';
 import { mockAssignees, Assignee } from './mock/ganttData';
@@ -25,8 +25,8 @@ interface NewTaskForm {
     progress: number;
 }
 
-const BM02: React.FC = () => {
-    const navigate = useNavigate();
+const BM02: React.FC<RouteComponentProps> = (props) => {
+    const { history } = props;
     const [tasks, setTasks] = useState<Task[]>(initializeTasks());
     const [showDependencyModal, setShowDependencyModal] = useState(false);
     const [showNewTaskModal, setShowNewTaskModal] = useState(false);
@@ -248,6 +248,14 @@ const BM02: React.FC = () => {
         ]
     };
 
+    const handleClick = (task: TaskOrEmpty) => {
+        if (!('id' in task)) {
+            return;
+        }
+        const fullTask = task as Task;
+        history.push(`/bm01?taskId=${fullTask.id}`);
+    };
+
     return (
         <Row>
             <Col span={24}>
@@ -263,7 +271,7 @@ const BM02: React.FC = () => {
                             </Button>
                             <Button
                                 type="default"
-                                onClick={() => selectedTask && navigate(`/bm01?taskId=${selectedTask.id}`)}
+                                onClick={() => selectedTask && history.push(`/bm01?taskId=${selectedTask.id}`)}
                                 disabled={!selectedTask}
                             >
                                 View Detail
