@@ -36,6 +36,18 @@ export const saveTasksToStorage = (tasks: Task[]): void => {
   }
 };
 
+export interface Assignee {
+    id: string;
+    name: string;
+    avatar?: string;
+}
+
+export const mockAssignees: Record<string, Assignee> = {
+    'user1': { id: 'user1', name: 'John Doe', avatar: 'https://example.com/avatar1.jpg' },
+    'user2': { id: 'user2', name: 'Jane Smith', avatar: 'https://example.com/avatar2.jpg' },
+    'user3': { id: 'user3', name: 'Bob Johnson', avatar: 'https://example.com/avatar3.jpg' }
+};
+
 export const mockTasks: Task[] = [
   {
     start: new Date(2025, 3, 2), // 02-04-2025
