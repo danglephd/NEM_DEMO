@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Task } from '@wamra/gantt-task-react';
 import { Modal, Form, Input, Select, Button, Row, Col, DatePicker, Avatar, InputNumber } from 'antd';
 import type { DatePickerProps } from 'antd';
@@ -23,6 +23,7 @@ interface NewTaskModalProps {
     onFormChange: (updates: Partial<NewTaskForm>) => void;
     onSubmit: () => void;
     isEditing?: boolean;
+    selectedParentId?: string;
 }
 
 const NewTaskModal: React.FC<NewTaskModalProps> = ({
@@ -32,8 +33,15 @@ const NewTaskModal: React.FC<NewTaskModalProps> = ({
     formData,
     onFormChange,
     onSubmit,
-    isEditing = false
+    isEditing = false,
+    selectedParentId
 }) => {
+    useEffect(() => {
+        if (visible && selectedParentId && !isEditing) {
+            onFormChange({ parent: selectedParentId });
+        }
+    }, [visible, selectedParentId]);
+
     const handleDateChange = (field: 'start' | 'end', date: DatePickerProps['value']) => {
         if (date) {
             onFormChange({ [field]: date.format('YYYY-MM-DD') });
@@ -48,20 +56,45 @@ const NewTaskModal: React.FC<NewTaskModalProps> = ({
         onFormChange({ progress });
     };
 
-    // Get available parent tasks based on task type
+    // Get available parent tasks based on task type and context
     const getAvailableParentTasks = () => {
         if (formData.type === 'project') {
             // Projects can't have parents
             return [];
         }
-        
+
+        // Get the current project ID if task has a parent
+        const getCurrentProjectId = (taskId: string | undefined): string | undefined => {
+            if (!taskId) return undefined;
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return undefined;
+            if (task.type === 'project') return task.id;
+            return getCurrentProjectId(task.parent);
+        };
+
+        // Get current project ID from either selected parent or form data
+        const currentProjectId = getCurrentProjectId(selectedParentId) || getCurrentProjectId(formData.parent);
+
+        // Filter tasks based on context
+        const availableTasks = tasks.filter(task => {
+            // If we have a current project context
+            if (currentProjectId) {
+                // Get the potential parent's project ID
+                const taskProjectId = getCurrentProjectId(task.id);
+                // Only include tasks from the same project
+                return taskProjectId === currentProjectId && task.id !== formData.parent;
+            }
+            // If no project context (Add New Task from header), show all tasks
+            return true;
+        });
+
         if (formData.type === 'milestone') {
             // Milestones can only be children of projects
-            return tasks.filter(task => task.type === 'project');
+            return availableTasks.filter(task => task.type === 'project');
         }
         
         // Tasks can be children of projects or other tasks
-        return tasks.filter(task => task.type === 'project' || task.type === 'task');
+        return availableTasks;
     };
 
     return (
@@ -155,10 +188,20 @@ const NewTaskModal: React.FC<NewTaskModalProps> = ({
                                 style={{ width: '100%' }}
                                 allowClear
                                 placeholder="Select parent task (optional)"
+                                optionLabelProp="label"
                             >
                                 {getAvailableParentTasks().map(task => (
-                                    <Select.Option key={task.id} value={task.id}>
-                                        {task.name}
+                                    <Select.Option 
+                                        key={task.id} 
+                                        value={task.id}
+                                        label={task.name}
+                                    >
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <span>{task.name}</span>
+                                            <span style={{ color: '#666', fontSize: '12px' }}>
+                                                ({task.type})
+                                            </span>
+                                        </div>
                                     </Select.Option>
                                 ))}
                             </Select>

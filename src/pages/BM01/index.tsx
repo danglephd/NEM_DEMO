@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Gantt, ViewMode, Task, OnDateChange, TaskOrEmpty, Dependency } from '@wamra/gantt-task-react';
 import { Card, Row, Col, Button, Space, message, Dropdown, Menu, Avatar } from 'antd';
 import type { MenuProps } from 'antd';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { initializeTasks, updateTaskProgress, updateTaskDates, deleteTask, addNewTask, updateTask, handleSubmitNewTask as submitNewTask } from './services/ganttService';
 import { addDependency, removeDependency, updateDependency, isValidDependency } from './services/dependencyService';
-import { mockAssignees, Assignee } from './mock/ganttData';
+import { mockAssignees, mockTasks, Assignee } from './mock/ganttData';
 import DependencyModal from './Modals/DependencyModal';
 import NewTaskModal from './Modals/NewTaskModal';
 import '@wamra/gantt-task-react/dist/style.css';
@@ -25,7 +26,11 @@ interface NewTaskForm {
 }
 
 const BM01: React.FC = () => {
-    const [tasks, setTasks] = useState<Task[]>(initializeTasks());
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+    const taskId = searchParams.get('taskId');
+    const [tasks, setTasks] = useState<Task[]>([]);
+    const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
     const [showDependencyModal, setShowDependencyModal] = useState(false);
     const [showNewTaskModal, setShowNewTaskModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -61,6 +66,55 @@ const BM01: React.FC = () => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    useEffect(() => {
+        // Get all tasks from storage, not just project tasks
+        const storedTasks = localStorage.getItem('gantt_tasks');
+        let loadedTasks: Task[] = [];
+        
+        if (storedTasks) {
+            try {
+                const parsedTasks = JSON.parse(storedTasks);
+                loadedTasks = parsedTasks.map((task: Task) => ({
+                    ...task,
+                    start: new Date(task.start),
+                    end: new Date(task.end),
+                    assignees: task.assignees || []
+                }));
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                loadedTasks = mockTasks; // Fallback to mock data
+            }
+        } else {
+            loadedTasks = mockTasks; // Use mock data if no stored tasks
+        }
+
+        setTasks(loadedTasks);
+
+        if (taskId) {
+            // Find the selected task
+            const task = loadedTasks.find(t => t.id === taskId);
+            if (task) {
+                setSelectedTask(task);
+                
+                // Function to get all child tasks recursively
+                const getAllChildTasks = (parentId: string): Task[] => {
+                    const directChildren = loadedTasks.filter(t => t.parent === parentId);
+                    const nestedChildren = directChildren.flatMap(child => getAllChildTasks(child.id));
+                    return [...directChildren, ...nestedChildren];
+                };
+
+                // Get all child tasks including nested ones
+                const allChildTasks = getAllChildTasks(taskId);
+                setFilteredTasks([task, ...allChildTasks]);
+            } else {
+                message.error('Task not found');
+                setFilteredTasks(loadedTasks);
+            }
+        } else {
+            setFilteredTasks(loadedTasks);
+        }
+    }, [taskId]);
 
     const onProgressChange = (task: Task) => {
         const updatedTasks = updateTaskProgress(tasks, task);
@@ -120,6 +174,32 @@ const BM01: React.FC = () => {
             console.log('Deleting task:', taskToDelete);
             const updatedTasks = deleteTask(tasks, taskToDelete.id);
             setTasks(updatedTasks);
+
+            // Update filtered tasks if we're viewing a specific project
+            if (taskId) {
+                const task = updatedTasks.find(t => t.id === taskId);
+                if (task) {
+                    // Function to get all child tasks recursively
+                    const getAllChildTasks = (parentId: string): Task[] => {
+                        const directChildren = updatedTasks.filter(t => t.parent === parentId);
+                        const nestedChildren = directChildren.flatMap(child => getAllChildTasks(child.id));
+                        return [...directChildren, ...nestedChildren];
+                    };
+
+                    // Get all child tasks including nested ones
+                    const allChildTasks = getAllChildTasks(taskId);
+                    setFilteredTasks([task, ...allChildTasks]);
+                } else {
+                    // If the current project was deleted, navigate back to project list
+                    message.success('Task deleted successfully');
+                    navigate('/bm02');
+                    return;
+                }
+            } else {
+                setFilteredTasks(updatedTasks);
+            }
+
+            message.success('Task deleted successfully');
             console.log('Task deleted successfully');
         }
     };
@@ -152,6 +232,7 @@ const BM01: React.FC = () => {
     const handleAddTask = (task: Task) => {
         console.log('onAddTask event triggered with task:', task);
         setShowNewTaskModal(true);
+        setSelectedTask(task);
 
         setNewTaskForm(prev => ({
             ...prev,
@@ -172,6 +253,26 @@ const BM01: React.FC = () => {
         }
 
         setTasks(result.updatedTasks);
+        
+        // Update filtered tasks if we're viewing a specific project
+        if (taskId) {
+            const task = result.updatedTasks.find(t => t.id === taskId);
+            if (task) {
+                // Function to get all child tasks recursively
+                const getAllChildTasks = (parentId: string): Task[] => {
+                    const directChildren = result.updatedTasks.filter(t => t.parent === parentId);
+                    const nestedChildren = directChildren.flatMap(child => getAllChildTasks(child.id));
+                    return [...directChildren, ...nestedChildren];
+                };
+
+                // Get all child tasks including nested ones
+                const allChildTasks = getAllChildTasks(taskId);
+                setFilteredTasks([task, ...allChildTasks]);
+            }
+        } else {
+            setFilteredTasks(result.updatedTasks);
+        }
+
         setShowNewTaskModal(false);
         setSelectedTask(null);
         setIsEditing(false);
@@ -183,6 +284,8 @@ const BM01: React.FC = () => {
             assignees: [],
             progress: 0
         });
+
+        message.success(isEditing ? 'Task updated successfully!' : 'Task added successfully!');
     };
 
     const handleFormChange = (updates: Partial<NewTaskForm>) => {
@@ -259,12 +362,38 @@ const BM01: React.FC = () => {
         <Row>
             <Col span={24}>
                 <Card
-                    title="BM01 - Gantt Chart"
+                    title={
+                        <Space>
+                            <span>Task Details</span>
+                            {selectedTask && (
+                                <span style={{ color: '#666' }}>
+                                    - {selectedTask.name}
+                                </span>
+                            )}
+                            <Button 
+                                type="link" 
+                                onClick={() => navigate('/bm02')}
+                            >
+                                Back to Project List
+                            </Button>
+                        </Space>
+                    }
                     extra={
                         <Space>
                             <Button
                                 type="primary"
-                                onClick={() => setShowNewTaskModal(true)}
+                                onClick={() => {
+                                    setSelectedTask(null);
+                                    setShowNewTaskModal(true);
+                                    setNewTaskForm({
+                                        name: '',
+                                        start: new Date().toISOString().split('T')[0],
+                                        end: new Date().toISOString().split('T')[0],
+                                        type: 'task',
+                                        assignees: [],
+                                        progress: 0
+                                    });
+                                }}
                             >
                                 Add New Task
                             </Button>
@@ -280,7 +409,7 @@ const BM01: React.FC = () => {
                         <div className="gantt-scroll-container">
                             <div>
                                 <Gantt
-                                    tasks={tasks}
+                                    tasks={filteredTasks}
                                     viewMode={viewMode}
                                     onDateChange={onDateChange}
                                     onProgressChange={onProgressChange}
@@ -294,8 +423,6 @@ const BM01: React.FC = () => {
                                     isShowDependencyWarnings={true}
                                     isShowTaskNumbers={true}
                                     TooltipContent={TooltipContent}
-                                    // TaskListHeader={TaskListHeader}
-                                    // TaskListTable={TaskListTable}
                                 />
                             </div>
                         </div>
@@ -353,6 +480,7 @@ const BM01: React.FC = () => {
                 onFormChange={handleFormChange}
                 onSubmit={handleSubmitNewTask}
                 isEditing={isEditing}
+                selectedParentId={selectedTask?.id}
             />
         </Row>
     );
