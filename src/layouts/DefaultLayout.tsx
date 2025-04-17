@@ -88,6 +88,15 @@ const DefaultLayout: React.FC = () => {
                 {!sidebarUnfoldable && 'BM01'}
               </CNavLink>
             </CNavItem>
+            <CNavItem>
+              <CNavLink 
+                onClick={() => handleNavigation('/bm02')} 
+                style={{ cursor: 'pointer' }}
+              >
+                <CIcon icon={cilList} className="nav-icon" />
+                {!sidebarUnfoldable && 'BM02'}
+              </CNavLink>
+            </CNavItem>
           </CSidebarNav>
           <CSidebarToggler
             className="d-none d-lg-flex"
