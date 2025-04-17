@@ -8,6 +8,7 @@ interface NewTaskForm {
     type: 'task' | 'project' | 'milestone';
     parent?: string;
     assignees?: string[];
+    progress: number;
 }
 
 // Helper function to calculate parent task progress
@@ -148,7 +149,8 @@ export const addNewTask = (tasks: Task[], newTask: Omit<Task, 'id'>): Task[] => 
 };
 
 export const updateTask = (tasks: Task[], taskId: string, updates: Partial<Task>): Task[] => {
-    const updatedTasks = tasks.map(task => {
+    // First update the task itself
+    let updatedTasks = tasks.map(task => {
         if (task.id === taskId) {
             return {
                 ...task,
@@ -158,6 +160,12 @@ export const updateTask = (tasks: Task[], taskId: string, updates: Partial<Task>
         }
         return task;
     });
+
+    // If progress was updated and the task has a parent, update ancestor tasks' progress
+    const updatedTask = updatedTasks.find(t => t.id === taskId);
+    if (updatedTask && 'progress' in updates && updatedTask.parent) {
+        updatedTasks = updateAncestorsProgress(updatedTasks, taskId);
+    }
     
     // Save to localStorage
     saveTasksToStorage(updatedTasks);
@@ -170,7 +178,7 @@ export const handleSubmitNewTask = (
     isEditing: boolean,
     selectedTask: Task | null
 ): { updatedTasks: Task[]; success: boolean; message?: string } => {
-    const { name, start, end, type, parent, assignees } = newTaskForm;
+    const { name, start, end, type, parent, assignees, progress } = newTaskForm;
     
     if (!name || !start || !end) {
         return {
@@ -186,7 +194,8 @@ export const handleSubmitNewTask = (
                 name,
                 start: new Date(start),
                 end: new Date(end),
-                assignees: assignees || [] // Ensure assignees field exists
+                assignees: assignees || [],
+                progress: progress || 0
             };
 
             const updatedTasks = updateTask(tasks, selectedTask.id, updates);
@@ -200,10 +209,10 @@ export const handleSubmitNewTask = (
                 start: new Date(start),
                 end: new Date(end),
                 type,
-                progress: 0,
+                progress: progress || 0,
                 isDisabled: false,
                 parent,
-                assignees: assignees || [], // Ensure assignees field exists
+                assignees: assignees || [],
                 styles: {
                     barProgressColor: '#2196F3',
                     barProgressSelectedColor: '#2196F3'

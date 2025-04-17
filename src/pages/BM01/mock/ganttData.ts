@@ -45,13 +45,143 @@ export const saveTasksToStorage = (tasks: Task[]): void => {
 export interface Assignee {
     id: string;
     name: string;
-    avatar?: string;
+    avatar: string;
+    role: string;
+    department: string;
+    color: string;
 }
 
 export const mockAssignees: Record<string, Assignee> = {
-    'user1': { id: 'user1', name: 'John Doe', avatar: 'https://example.com/avatar1.jpg' },
-    'user2': { id: 'user2', name: 'Jane Smith', avatar: 'https://example.com/avatar2.jpg' },
-    'user3': { id: 'user3', name: 'Bob Johnson', avatar: 'https://example.com/avatar3.jpg' }
+    'user1': {
+        id: 'user1',
+        name: 'John Smith',
+        avatar: `data:image/svg+xml,${encodeURIComponent(`
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="#4CAF50"/>
+                <text x="50%" y="50%" dy=".1em" fill="white" font-size="20" font-family="Arial" text-anchor="middle" dominant-baseline="middle">JS</text>
+            </svg>
+        `)}`,
+        role: 'Project Manager',
+        department: 'Management',
+        color: '#4CAF50'
+    },
+    'user2': {
+        id: 'user2',
+        name: 'Emma Davis',
+        avatar: `data:image/svg+xml,${encodeURIComponent(`
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="#2196F3"/>
+                <text x="50%" y="50%" dy=".1em" fill="white" font-size="20" font-family="Arial" text-anchor="middle" dominant-baseline="middle">ED</text>
+            </svg>
+        `)}`,
+        role: 'Lead Developer',
+        department: 'Development',
+        color: '#2196F3'
+    },
+    'user3': {
+        id: 'user3',
+        name: 'Michael Chen',
+        avatar: `data:image/svg+xml,${encodeURIComponent(`
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="#9C27B0"/>
+                <text x="50%" y="50%" dy=".1em" fill="white" font-size="20" font-family="Arial" text-anchor="middle" dominant-baseline="middle">MC</text>
+            </svg>
+        `)}`,
+        role: 'Senior Developer',
+        department: 'Development',
+        color: '#9C27B0'
+    },
+    'user4': {
+        id: 'user4',
+        name: 'Sarah Wilson',
+        avatar: `data:image/svg+xml,${encodeURIComponent(`
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="#FF5722"/>
+                <text x="50%" y="50%" dy=".1em" fill="white" font-size="20" font-family="Arial" text-anchor="middle" dominant-baseline="middle">SW</text>
+            </svg>
+        `)}`,
+        role: 'UI/UX Designer',
+        department: 'Design',
+        color: '#FF5722'
+    },
+    'user5': {
+        id: 'user5',
+        name: 'David Brown',
+        avatar: `data:image/svg+xml,${encodeURIComponent(`
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="#795548"/>
+                <text x="50%" y="50%" dy=".1em" fill="white" font-size="20" font-family="Arial" text-anchor="middle" dominant-baseline="middle">DB</text>
+            </svg>
+        `)}`,
+        role: 'QA Engineer',
+        department: 'Quality Assurance',
+        color: '#795548'
+    },
+    'user6': {
+        id: 'user6',
+        name: 'Lisa Anderson',
+        avatar: `data:image/svg+xml,${encodeURIComponent(`
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="#009688"/>
+                <text x="50%" y="50%" dy=".1em" fill="white" font-size="20" font-family="Arial" text-anchor="middle" dominant-baseline="middle">LA</text>
+            </svg>
+        `)}`,
+        role: 'Business Analyst',
+        department: 'Business',
+        color: '#009688'
+    },
+    'user7': {
+        id: 'user7',
+        name: 'James Taylor',
+        avatar: `data:image/svg+xml,${encodeURIComponent(`
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="#FF9800"/>
+                <text x="50%" y="50%" dy=".1em" fill="white" font-size="20" font-family="Arial" text-anchor="middle" dominant-baseline="middle">JT</text>
+            </svg>
+        `)}`,
+        role: 'DevOps Engineer',
+        department: 'Operations',
+        color: '#FF9800'
+    },
+    'user8': {
+        id: 'user8',
+        name: 'Maria Garcia',
+        avatar: `data:image/svg+xml,${encodeURIComponent(`
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="#E91E63"/>
+                <text x="50%" y="50%" dy=".1em" fill="white" font-size="20" font-family="Arial" text-anchor="middle" dominant-baseline="middle">MG</text>
+            </svg>
+        `)}`,
+        role: 'Frontend Developer',
+        department: 'Development',
+        color: '#E91E63'
+    },
+    'user9': {
+        id: 'user9',
+        name: 'Robert Lee',
+        avatar: `data:image/svg+xml,${encodeURIComponent(`
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="#673AB7"/>
+                <text x="50%" y="50%" dy=".1em" fill="white" font-size="20" font-family="Arial" text-anchor="middle" dominant-baseline="middle">RL</text>
+            </svg>
+        `)}`,
+        role: 'Backend Developer',
+        department: 'Development',
+        color: '#673AB7'
+    },
+    'user10': {
+        id: 'user10',
+        name: 'Emily White',
+        avatar: `data:image/svg+xml,${encodeURIComponent(`
+            <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" fill="#3F51B5"/>
+                <text x="50%" y="50%" dy=".1em" fill="white" font-size="20" font-family="Arial" text-anchor="middle" dominant-baseline="middle">EW</text>
+            </svg>
+        `)}`,
+        role: 'System Architect',
+        department: 'Architecture',
+        color: '#3F51B5'
+    }
 };
 
 export const mockTasks: Task[] = [

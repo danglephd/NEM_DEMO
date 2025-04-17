@@ -1,6 +1,6 @@
 import React from 'react';
 import { Task } from '@wamra/gantt-task-react';
-import { Modal, Form, Input, Select, Button, Row, Col, DatePicker, Avatar } from 'antd';
+import { Modal, Form, Input, Select, Button, Row, Col, DatePicker, Avatar, InputNumber } from 'antd';
 import type { DatePickerProps } from 'antd';
 import dayjs from 'dayjs';
 import { mockAssignees, Assignee } from '../mock/ganttData';
@@ -12,6 +12,7 @@ interface NewTaskForm {
     type: 'task' | 'project' | 'milestone';
     parent?: string;
     assignees?: string[];
+    progress: number;
 }
 
 interface NewTaskModalProps {
@@ -37,6 +38,14 @@ const NewTaskModal: React.FC<NewTaskModalProps> = ({
         if (date) {
             onFormChange({ [field]: date.format('YYYY-MM-DD') });
         }
+    };
+
+    const handleProgressChange = (value: number | null) => {
+        // Ensure value is between 0 and 100
+        let progress = value || 0;
+        if (progress < 0) progress = 0;
+        if (progress > 100) progress = 100;
+        onFormChange({ progress });
     };
 
     // Get available parent tasks based on task type
@@ -103,7 +112,13 @@ const NewTaskModal: React.FC<NewTaskModalProps> = ({
                         <Form.Item label="Task Type">
                             <Select
                                 value={formData.type}
-                                onChange={(value) => onFormChange({ type: value as 'task' | 'project' | 'milestone' })}
+                                onChange={(value) => {
+                                    onFormChange({ 
+                                        type: value as 'task' | 'project' | 'milestone',
+                                        // Reset progress to 0 if switching to milestone
+                                        progress: value === 'milestone' ? 0 : formData.progress
+                                    });
+                                }}
                                 disabled={isEditing}
                                 style={{ width: '100%' }}
                             >
@@ -111,6 +126,24 @@ const NewTaskModal: React.FC<NewTaskModalProps> = ({
                                 <Select.Option value="project">Project</Select.Option>
                                 <Select.Option value="milestone">Milestone</Select.Option>
                             </Select>
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item 
+                            label="Progress" 
+                            help={formData.type === 'milestone' ? 'Milestones do not have progress' : 'Enter a value between 0% and 100%'}
+                        >
+                            <InputNumber
+                                value={formData.progress}
+                                onChange={handleProgressChange}
+                                min={0}
+                                max={100}
+                                formatter={(value) => `${value}%`}
+                                parser={(value) => Number(value!.replace('%', ''))}
+                                style={{ width: '100%' }}
+                                disabled={formData.type === 'milestone'}
+                                step={10}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>

@@ -21,6 +21,7 @@ interface NewTaskForm {
     type: 'task' | 'project' | 'milestone';
     parent?: string;
     assignees?: string[];
+    progress: number;
 }
 
 const BM01: React.FC = () => {
@@ -35,7 +36,8 @@ const BM01: React.FC = () => {
         start: new Date().toISOString().split('T')[0],
         end: new Date().toISOString().split('T')[0],
         type: 'task',
-        assignees: []
+        assignees: [],
+        progress: 0
     });
     const [isEditing, setIsEditing] = useState(false);
     const [viewMode, setViewMode] = useState(ViewMode.Day);
@@ -140,7 +142,8 @@ const BM01: React.FC = () => {
             end: fullTask.end.toISOString().split('T')[0],
             type: fullTask.type as 'task' | 'project' | 'milestone',
             parent: fullTask.parent,
-            assignees: fullTask.assignees || []
+            assignees: fullTask.assignees || [],
+            progress: fullTask.progress
         });
 
         return Promise.resolve(null);
@@ -177,7 +180,8 @@ const BM01: React.FC = () => {
             start: new Date().toISOString().split('T')[0],
             end: new Date().toISOString().split('T')[0],
             type: 'task',
-            assignees: []
+            assignees: [],
+            progress: 0
         });
     };
 
@@ -340,7 +344,8 @@ const BM01: React.FC = () => {
                         start: new Date().toISOString().split('T')[0],
                         end: new Date().toISOString().split('T')[0],
                         type: 'task',
-                        assignees: []
+                        assignees: [],
+                        progress: 0
                     });
                 }}
                 tasks={tasks}
