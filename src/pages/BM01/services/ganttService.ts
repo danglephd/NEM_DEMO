@@ -1,6 +1,15 @@
 import { Task, TaskOrEmpty } from '@wamra/gantt-task-react';
 import { loadTasksFromStorage, saveTasksToStorage } from '../mock/ganttData';
 
+interface NewTaskForm {
+    name: string;
+    start: string;
+    end: string;
+    type: 'task' | 'project' | 'milestone';
+    parent?: string;
+    assignees?: string[];
+}
+
 export const updateTaskProgress = (tasks: Task[], task: Task): Task[] => {
     const updatedTasks = tasks.map((t) => {
         if (t.id === task.id) {
@@ -84,7 +93,8 @@ export const addNewTask = (tasks: Task[], newTask: Omit<Task, 'id'>): Task[] => 
         styles: newTask.styles || { 
             barProgressColor: '#2196F3',
             barProgressSelectedColor: '#2196F3'
-        }
+        },
+        assignees: newTask.assignees || [] // Ensure assignees field exists
     };
 
     const updatedTasks = [...tasks, taskToAdd];
@@ -100,10 +110,7 @@ export const updateTask = (tasks: Task[], taskId: string, updates: Partial<Task>
             return {
                 ...task,
                 ...updates,
-                // Preserve these properties
-                id: task.id,
-                type: task.type,
-                parent: task.parent
+                assignees: updates.assignees || task.assignees || [] // Ensure assignees field exists
             };
         }
         return task;
@@ -112,4 +119,65 @@ export const updateTask = (tasks: Task[], taskId: string, updates: Partial<Task>
     // Save to localStorage
     saveTasksToStorage(updatedTasks);
     return updatedTasks;
+};
+
+export const handleSubmitNewTask = (
+    tasks: Task[],
+    newTaskForm: NewTaskForm,
+    isEditing: boolean,
+    selectedTask: Task | null
+): { updatedTasks: Task[]; success: boolean; message?: string } => {
+    const { name, start, end, type, parent, assignees } = newTaskForm;
+    
+    if (!name || !start || !end) {
+        return {
+            updatedTasks: tasks,
+            success: false,
+            message: 'Vui lòng điền đầy đủ thông tin task!'
+        };
+    }
+
+    try {
+        if (isEditing && selectedTask) {
+            const updates: Partial<Task> = {
+                name,
+                start: new Date(start),
+                end: new Date(end),
+                assignees: assignees || [] // Ensure assignees field exists
+            };
+
+            const updatedTasks = updateTask(tasks, selectedTask.id, updates);
+            return {
+                updatedTasks,
+                success: true
+            };
+        } else {
+            const newTask: Omit<Task, 'id'> = {
+                name,
+                start: new Date(start),
+                end: new Date(end),
+                type,
+                progress: 0,
+                isDisabled: false,
+                parent,
+                assignees: assignees || [], // Ensure assignees field exists
+                styles: {
+                    barProgressColor: '#2196F3',
+                    barProgressSelectedColor: '#2196F3'
+                }
+            };
+
+            const updatedTasks = addNewTask(tasks, newTask);
+            return {
+                updatedTasks,
+                success: true
+            };
+        }
+    } catch (error) {
+        return {
+            updatedTasks: tasks,
+            success: false,
+            message: 'Có lỗi xảy ra khi thêm/cập nhật task!'
+        };
+    }
 }; 

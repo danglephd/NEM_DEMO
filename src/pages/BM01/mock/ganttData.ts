@@ -13,11 +13,12 @@ export const loadTasksFromStorage = (): Task[] => {
   
   try {
     const parsedTasks = JSON.parse(storedTasks);
-    // Convert string dates back to Date objects
+    // Convert string dates back to Date objects and ensure assignees field exists
     return parsedTasks.map((task: any) => ({
       ...task,
       start: new Date(task.start),
-      end: new Date(task.end)
+      end: new Date(task.end),
+      assignees: task.assignees || [] // Ensure assignees field exists
     }));
   } catch (error) {
     console.error('Error loading tasks from storage:', error);
@@ -30,7 +31,12 @@ export const loadTasksFromStorage = (): Task[] => {
 // Utility function to save tasks to localStorage
 export const saveTasksToStorage = (tasks: Task[]): void => {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    // Ensure assignees field exists before saving
+    const tasksToSave = tasks.map(task => ({
+      ...task,
+      assignees: task.assignees || []
+    }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasksToSave));
   } catch (error) {
     console.error('Error saving tasks to storage:', error);
   }

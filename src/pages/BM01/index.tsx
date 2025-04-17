@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Gantt, ViewMode, Task, OnDateChange, TaskOrEmpty, Dependency } from '@wamra/gantt-task-react';
-import { Card, Row, Col, Button, Space } from 'antd';
-import { initializeTasks, updateTaskProgress, updateTaskDates, deleteTask, addNewTask, updateTask } from './services/ganttService';
+import { Card, Row, Col, Button, Space, message, Dropdown, Menu, Avatar } from 'antd';
+import type { MenuProps } from 'antd';
+import { initializeTasks, updateTaskProgress, updateTaskDates, deleteTask, addNewTask, updateTask, handleSubmitNewTask as submitNewTask } from './services/ganttService';
 import { addDependency, removeDependency, updateDependency, isValidDependency } from './services/dependencyService';
+import { mockAssignees, Assignee } from './mock/ganttData';
 import DependencyModal from './Modals/DependencyModal';
 import NewTaskModal from './Modals/NewTaskModal';
 import '@wamra/gantt-task-react/dist/style.css';
@@ -16,6 +18,7 @@ interface NewTaskForm {
     end: string;
     type: 'task' | 'project' | 'milestone';
     parent?: string;
+    assignees?: string[];
 }
 
 const BM01: React.FC = () => {
@@ -29,11 +32,14 @@ const BM01: React.FC = () => {
         name: '',
         start: new Date().toISOString().split('T')[0],
         end: new Date().toISOString().split('T')[0],
-        type: 'task'
+        type: 'task',
+        assignees: []
     });
     const [isEditing, setIsEditing] = useState(false);
     const [viewMode, setViewMode] = useState(ViewMode.Day);
     const [chartHeight, setChartHeight] = useState('600px');
+    const [menuPosition, setMenuPosition] = useState<{ x: number; y: number } | null>(null);
+    const [selectedTaskForMenu, setSelectedTaskForMenu] = useState<Task | null>(null);
 
     // Responsive adjustments
     useEffect(() => {
@@ -116,7 +122,7 @@ const BM01: React.FC = () => {
 
     const handleEditTask = (task: TaskOrEmpty) => {
         console.log('onEditTask event triggered with task:', task);
-        
+
         if (!('id' in task)) {
             return Promise.resolve(null);
         }
@@ -125,13 +131,14 @@ const BM01: React.FC = () => {
         setSelectedTask(fullTask);
         setIsEditing(true);
         setShowNewTaskModal(true);
-        
+
         setNewTaskForm({
             name: fullTask.name,
             start: fullTask.start.toISOString().split('T')[0],
             end: fullTask.end.toISOString().split('T')[0],
             type: fullTask.type as 'task' | 'project' | 'milestone',
-            parent: fullTask.parent
+            parent: fullTask.parent,
+            assignees: fullTask.assignees || []
         });
 
         return Promise.resolve(null);
@@ -140,7 +147,7 @@ const BM01: React.FC = () => {
     const handleAddTask = (task: Task) => {
         console.log('onAddTask event triggered with task:', task);
         setShowNewTaskModal(true);
-        
+
         setNewTaskForm(prev => ({
             ...prev,
             start: task.start.toISOString().split('T')[0],
@@ -152,45 +159,14 @@ const BM01: React.FC = () => {
     };
 
     const handleSubmitNewTask = () => {
-        const { name, start, end, type, parent } = newTaskForm;
-        
-        if (!name || !start || !end) {
-            alert('Vui lòng điền đầy đủ thông tin task!');
+        const result = submitNewTask(tasks, newTaskForm, isEditing, selectedTask);
+
+        if (!result.success) {
+            message.error(result.message || 'Có lỗi xảy ra!');
             return;
         }
 
-        if (isEditing && selectedTask) {
-            const updates: Partial<Task> = {
-                name,
-                start: new Date(start),
-                end: new Date(end)
-            };
-
-            console.log('Updating task:', selectedTask.id, updates);
-            const updatedTasks = updateTask(tasks, selectedTask.id, updates);
-            setTasks(updatedTasks);
-            console.log('Task updated successfully');
-        } else {
-            const newTask: Omit<Task, 'id'> = {
-                name,
-                start: new Date(start),
-                end: new Date(end),
-                type,
-                progress: 0,
-                isDisabled: false,
-                parent,
-                styles: {
-                    barProgressColor: '#2196F3',
-                    barProgressSelectedColor: '#2196F3'
-                }
-            };
-
-            console.log('Adding new task:', newTask);
-            const updatedTasks = addNewTask(tasks, newTask);
-            setTasks(updatedTasks);
-            console.log('Task added successfully');
-        }
-
+        setTasks(result.updatedTasks);
         setShowNewTaskModal(false);
         setSelectedTask(null);
         setIsEditing(false);
@@ -198,7 +174,8 @@ const BM01: React.FC = () => {
             name: '',
             start: new Date().toISOString().split('T')[0],
             end: new Date().toISOString().split('T')[0],
-            type: 'task'
+            type: 'task',
+            assignees: []
         });
     };
 
@@ -206,14 +183,80 @@ const BM01: React.FC = () => {
         setNewTaskForm(prev => ({ ...prev, ...updates }));
     };
 
+    const handleClick = (task: TaskOrEmpty) => {
+        if (!('id' in task)) {
+            console.log('>>>handleClick', task);
+            return;
+        }
+
+        const fullTask = task as Task;
+        setSelectedTaskForMenu(fullTask);
+
+        // Get the clicked position
+        const event = window.event as MouseEvent;
+        setMenuPosition({ x: event.clientX, y: event.clientY });
+    };
+
+    const handleMenuClick = (key: string) => {
+        if (!selectedTaskForMenu) return;
+
+        switch (key) {
+            case 'optionA':
+                message.info(`Selected Option A for task: ${selectedTaskForMenu.name}`);
+                break;
+            case 'optionB':
+                message.info(`Selected Option B for task: ${selectedTaskForMenu.name}`);
+                break;
+        }
+        setMenuPosition(null);
+    };
+
+    const menu: MenuProps = {
+        items: [
+            {
+                key: 'optionA',
+                label: 'Option A',
+                onClick: () => handleMenuClick('optionA')
+            },
+            {
+                key: 'optionB',
+                label: 'Option B',
+                onClick: () => handleMenuClick('optionB')
+            },
+            {
+                type: 'divider'
+            },
+            {
+                key: 'assignees',
+                label: 'Assignees',
+                children: selectedTaskForMenu?.assignees?.map(assigneeId => {
+                    const assignee = mockAssignees[assigneeId];
+                    if (!assignee) return null;
+                    
+                    return {
+                        key: `assignee-${assignee.id}`,
+                        label: (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <Avatar src={assignee.avatar} size="small">
+                                    {assignee.name.charAt(0)}
+                                </Avatar>
+                                <span>{assignee.name}</span>
+                            </div>
+                        )
+                    };
+                }).filter(Boolean) || []
+            }
+        ]
+    };
+
     return (
         <Row>
             <Col span={24}>
-                <Card 
+                <Card
                     title="BM01 - Gantt Chart"
                     extra={
                         <Space>
-                            <Button 
+                            <Button
                                 type="primary"
                                 onClick={() => setShowNewTaskModal(true)}
                             >
@@ -240,12 +283,35 @@ const BM01: React.FC = () => {
                                     onArrowDoubleClick={handleArrowDoubleClick}
                                     onAddTaskClick={handleAddTask}
                                     onEditTaskClick={handleEditTask}
+                                    isShowCriticalPath={true}
+                                    isShowChildOutOfParentWarnings={true}
+                                    isShowDependencyWarnings={true}
+                                    isShowTaskNumbers={true}
+                                    onClick={handleClick}
                                 />
                             </div>
                         </div>
                     </div>
                 </Card>
             </Col>
+
+            {menuPosition && (
+                <Dropdown 
+                    menu={menu}
+                    open={true} 
+                    onOpenChange={() => setMenuPosition(null)}
+                >
+                    <div 
+                        style={{ 
+                            position: 'fixed', 
+                            left: menuPosition.x, 
+                            top: menuPosition.y,
+                            width: 0,
+                            height: 0
+                        }} 
+                    />
+                </Dropdown>
+            )}
 
             <DependencyModal
                 visible={showDependencyModal}
@@ -269,7 +335,8 @@ const BM01: React.FC = () => {
                         name: '',
                         start: new Date().toISOString().split('T')[0],
                         end: new Date().toISOString().split('T')[0],
-                        type: 'task'
+                        type: 'task',
+                        assignees: []
                     });
                 }}
                 tasks={tasks}
