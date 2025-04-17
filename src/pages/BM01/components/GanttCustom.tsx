@@ -2,6 +2,7 @@ import React from 'react';
 import { Task, TaskOrEmpty } from '@wamra/gantt-task-react';
 import { mockAssignees } from '../mock/ganttData';
 import { Avatar, Tooltip } from 'antd';
+import { SortAscendingOutlined, ArrowsAltOutlined, ColumnHeightOutlined } from '@ant-design/icons';
 
 interface TaskListHeaderProps {
     headerHeight: number;
@@ -27,21 +28,60 @@ export const TaskListHeader: React.FC<TaskListHeaderProps> = ({
                 height: headerHeight,
                 fontFamily,
                 fontSize,
-                display: 'flex'
+                display: 'flex',
+                backgroundColor: '#f5f5f5',
+                borderBottom: '1px solid #e8e8e8'
             }}
         >
-            <div style={{ display: 'flex', width: '100%' }}>
-                <div className="gantt-table-header-cell" style={{ flex: 1 }}>
-                    Name
+            <div style={{ display: 'flex', width: '100%', alignItems: 'center' }}>
+                <div 
+                    className="gantt-table-header-cell" 
+                    style={{ 
+                        flex: 1, 
+                        display: 'flex', 
+                        alignItems: 'center',
+                        gap: '4px'
+                    }}
+                >
+                    <span>Name</span>
+                    <div style={{ display: 'flex', gap: '2px' }}>
+                        <SortAscendingOutlined style={{ fontSize: '12px', cursor: 'pointer' }} />
+                        <ArrowsAltOutlined style={{ fontSize: '12px', cursor: 'pointer' }} />
+                        <ColumnHeightOutlined style={{ fontSize: '12px', cursor: 'pointer' }} />
+                    </div>
                 </div>
-                <div className="gantt-table-header-cell" style={{ width: 120 }}>
-                    From
+                <div 
+                    className="gantt-table-header-cell" 
+                    style={{ 
+                        width: 120,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                    }}
+                >
+                    <span>From</span>
                 </div>
-                <div className="gantt-table-header-cell" style={{ width: 120 }}>
-                    To
+                <div 
+                    className="gantt-table-header-cell" 
+                    style={{ 
+                        width: 120,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                    }}
+                >
+                    <span>To</span>
                 </div>
-                <div className="gantt-table-header-cell" style={{ width: 120 }}>
-                    Assignees
+                <div 
+                    className="gantt-table-header-cell" 
+                    style={{ 
+                        width: 120,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                    }}
+                >
+                    <span>Dependencies</span>
                 </div>
             </div>
         </div>

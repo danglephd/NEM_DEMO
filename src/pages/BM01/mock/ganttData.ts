@@ -56,281 +56,383 @@ export const mockAssignees: Record<string, Assignee> = {
 
 export const mockTasks: Task[] = [
   {
-    start: new Date(2025, 3, 2), // 02-04-2025
-    end: new Date(2025, 3, 17),  // +15 days
-    name: 'Project planning',
-    id: 'project_planning',
-    type: 'project',
-    progress: 15,
+    start: new Date(2025, 3, 2), // 2025-04-02
+    end: new Date(2025, 3, 17),  // 2025-04-17
+    name: "Project planning",
+    id: "project_planning",
+    type: "project",
+    progress: 100,
     isDisabled: false,
-    styles: { barProgressColor: '#00BF96', barProgressSelectedColor: '#00BF96' }
+    styles: {
+      barProgressColor: "#00BF96",
+      barProgressSelectedColor: "#00BF96"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 3, 2), // 02-04-2025
-    end: new Date(2025, 3, 5),   // +3 days
-    name: 'Marketing analysis',
-    id: 'marketing_analysis',
-    type: 'task',
-    progress: 3,
+    start: new Date(2025, 3, 2), // 2025-04-02
+    end: new Date(2025, 3, 7),   // 2025-04-07
+    name: "Marketing analysis",
+    id: "marketing_analysis",
+    type: "task",
+    progress: 99,
     isDisabled: false,
-    parent: 'project_planning',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
+    parent: "project_planning",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: ["user1", "user2"]
   },
   {
-    start: new Date(2025, 3, 5), // 05-04-2025
-    end: new Date(2025, 3, 7),   // +2 days
-    name: 'Discussions',
-    id: 'discussions',
-    type: 'project',
-    progress: 2,
+    start: new Date(2025, 3, 4), // 2025-04-04
+    end: new Date(2025, 3, 15),  // 2025-04-15
+    name: "Discussions",
+    id: "discussions",
+    type: "project",
+    progress: 100,
     isDisabled: false,
-    parent: 'project_planning',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
+    parent: "project_planning",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: ["user2"],
+    dependencies: [{
+      sourceId: "marketing_analysis",
+      sourceTarget: "endOfTask",
+      ownTarget: "startOfTask"
+    }]
   },
   {
-    start: new Date(2025, 3, 6), // 06-04-2025
-    end: new Date(2025, 3, 9),   // +3 days
-    name: 'Initial design',
-    id: 'initial_design',
-    type: 'task',
-    progress: 0,
+    start: new Date(2025, 3, 4), // 2025-04-04
+    end: new Date(2025, 3, 8),   // 2025-04-08
+    name: "Initial design",
+    id: "initial_design",
+    type: "task",
+    progress: 100,
     isDisabled: false,
-    parent: 'discussions',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
+    parent: "discussions",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 3, 9), // 09-04-2025
-    end: new Date(2025, 3, 9),   // 0 days
-    name: 'Presentation',
-    id: 'presentation',
-    type: 'task',
-    progress: 0,
+    start: new Date(2025, 3, 9), // 2025-04-09
+    end: new Date(2025, 3, 9),   // 2025-04-09
+    name: "Presentation",
+    id: "presentation",
+    type: "task",
+    progress: 100,
     isDisabled: false,
-    parent: 'discussions',
-    dependencies: [{    sourceId: 'initial_design',
-      sourceTarget: 'endOfTask',
-      ownTarget: 'startOfTask'
+    parent: "discussions",
+    dependencies: [{
+      sourceId: "initial_design",
+      sourceTarget: "endOfTask",
+      ownTarget: "startOfTask"
     }],
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 3, 7), // 07-04-2025
-    end: new Date(2025, 3, 12),  // +5 days
-    name: 'Prototyping',
-    id: 'prototyping',
-    type: 'task',
-    progress: 0,
+    start: new Date(2025, 3, 7), // 2025-04-07
+    end: new Date(2025, 3, 12),  // 2025-04-12
+    name: "Prototyping",
+    id: "prototyping",
+    type: "task",
+    progress: 100,
     isDisabled: false,
-    parent: 'discussions',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
+    parent: "discussions",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 3, 8), // 08-04-2025
-    end: new Date(2025, 3, 17),  // +9 days
-    name: 'User testing',
-    id: 'user_testing',
-    type: 'task',
-    progress: 0,
+    start: new Date(2025, 3, 8), // 2025-04-08
+    end: new Date(2025, 3, 17),  // 2025-04-17
+    name: "User testing",
+    id: "user_testing",
+    type: "task",
+    progress: 100,
     isDisabled: false,
-    parent: 'discussions',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
+    parent: "discussions",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 3, 8), // 08-04-2025
-    end: new Date(2025, 3, 8),   // 0 days
-    name: 'Approval of strategy',
-    id: 'approval',
-    type: 'milestone',
+    start: new Date(2025, 3, 17), // 2025-04-17
+    end: new Date(2025, 3, 17),   // 2025-04-17
+    name: "Approval of strategy",
+    id: "approval",
+    type: "milestone",
     progress: 0,
     isDisabled: false,
-    parent: 'project_planning',
-    dependencies: [{    sourceId: 'discussions',
-      sourceTarget: 'endOfTask',
-      ownTarget: 'startOfTask'
+    parent: "project_planning",
+    dependencies: [{
+      sourceId: "discussions",
+      sourceTarget: "endOfTask",
+      ownTarget: "startOfTask"
     }],
-    styles: { barProgressColor: '#9C27B0', barProgressSelectedColor: '#9C27B0' }
+    styles: {
+      barProgressColor: "#9C27B0",
+      barProgressSelectedColor: "#9C27B0"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 3, 2), // 02-04-2025
-    end: new Date(2025, 3, 12),  // +10 days
-    name: 'Project management',
-    id: 'project_management',
-    type: 'project',
+    start: new Date(2025, 3, 2), // 2025-04-02
+    end: new Date(2025, 3, 12),  // 2025-04-12
+    name: "Project management",
+    id: "project_management",
+    type: "project",
     progress: 10,
     isDisabled: false,
-    styles: { barProgressColor: '#00BF96', barProgressSelectedColor: '#00BF96' }
+    styles: {
+      barProgressColor: "#00BF96",
+      barProgressSelectedColor: "#00BF96"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 3, 2), // 02-04-2025
-    end: new Date(2025, 3, 6),   // +4 days
-    name: 'Resource planning',
-    id: 'resource_planning',
-    type: 'task',
+    start: new Date(2025, 3, 2), // 2025-04-02
+    end: new Date(2025, 3, 6),   // 2025-04-06
+    name: "Resource planning",
+    id: "resource_planning",
+    type: "task",
     progress: 0,
     isDisabled: false,
-    parent: 'project_management',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
+    parent: "project_management",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 3, 6), // 06-04-2025
-    end: new Date(2025, 3, 8),   // +2 days
-    name: 'Getting approval',
-    id: 'getting_approval',
-    type: 'task',
+    start: new Date(2025, 3, 6), // 2025-04-06
+    end: new Date(2025, 3, 8),   // 2025-04-08
+    name: "Getting approval",
+    id: "getting_approval",
+    type: "task",
     progress: 0,
     isDisabled: false,
-    parent: 'project_management',
-    dependencies: [{    sourceId: 'resource_planning',
-      sourceTarget: 'endOfTask',
-      ownTarget: 'startOfTask'
-    }],
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
-  },
-  {
-    start: new Date(2025, 3, 8), // 08-04-2025
-    end: new Date(2025, 3, 10),  // +2 days
-    name: 'Team introduction',
-    id: 'team_introduction',
-    type: 'task',
-    progress: 0,
-    isDisabled: false,
-    parent: 'project_management',
-    dependencies: [{    sourceId: 'getting_approval',
-      sourceTarget: 'endOfTask',
-      ownTarget: 'startOfTask'
-    }],
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
-  },
-  {
-    start: new Date(2025, 3, 10), // 10-04-2025
-    end: new Date(2025, 3, 12),   // +2 days
-    name: 'Resource management',
-    id: 'resource_management',
-    type: 'task',
-    progress: 0,
-    isDisabled: false,
-    parent: 'project_management',
-    dependencies: [{    sourceId: 'team_introduction',
-      sourceTarget: 'endOfTask',
-      ownTarget: 'startOfTask'
-    }],
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
-  },
-  {
-    start: new Date(2025, 3, 9), // 09-04-2025
-    end: new Date(2025, 4, 15),  // +36 days
-    name: 'Development',
-    id: 'development',
-    type: 'project',
-    progress: 0,
-    isDisabled: false,
-    styles: { barProgressColor: '#00BF96', barProgressSelectedColor: '#00BF96' }
-  },
-  {
-    start: new Date(2025, 3, 9), // 09-04-2025
-    end: new Date(2025, 3, 15),  // +6 days
-    name: 'Prototyping',
-    id: 'dev_prototyping',
-    type: 'task',
-    progress: 0,
-    isDisabled: false,
-    parent: 'development',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
-  },
-  {
-    start: new Date(2025, 3, 15), // 15-04-2025
-    end: new Date(2025, 3, 30),   // +15 days
-    name: 'Basic functionality',
-    id: 'basic_functionality',
-    type: 'task',
-    progress: 0,
-    isDisabled: false,
-    parent: 'development',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
-  },
-  {
-    start: new Date(2025, 3, 30), // 30-04-2025
-    end: new Date(2025, 4, 15),   // +15 days
-    name: 'Finalizing MVA',
-    id: 'finalizing_mva',
-    type: 'task',
-    progress: 0,
-    isDisabled: false,
-    parent: 'development',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
-  },
-  {
-    start: new Date(2025, 3, 9), // 09-04-2025
-    end: new Date(2025, 4, 25),  // +46 days
-    name: 'Testing',
-    id: 'testing',
-    type: 'project',
-    progress: 0,
-    isDisabled: false,
-    styles: { barProgressColor: '#00BF96', barProgressSelectedColor: '#00BF96' }
-  },
-  {
-    start: new Date(2025, 3, 9), // 09-04-2025
-    end: new Date(2025, 3, 15),  // +6 days
-    name: 'Testing prototype',
-    id: 'testing_prototype',
-    type: 'task',
-    progress: 0,
-    isDisabled: false,
-    parent: 'testing',
+    parent: "project_management",
     dependencies: [{
-      sourceId: 'dev_prototyping',
-      sourceTarget: 'endOfTask',
-      ownTarget: 'startOfTask'
+      sourceId: "resource_planning",
+      sourceTarget: "endOfTask",
+      ownTarget: "startOfTask"
     }],
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 3, 15), // 15-04-2025
-    end: new Date(2025, 3, 30),   // +15 days
-    name: 'Testing basic functionality',
-    id: 'testing_basic_functionality',
-    type: 'task',
+    start: new Date(2025, 3, 8), // 2025-04-08
+    end: new Date(2025, 3, 10),  // 2025-04-10
+    name: "Team introduction",
+    id: "team_introduction",
+    type: "task",
     progress: 0,
     isDisabled: false,
-    parent: 'testing',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
+    parent: "project_management",
+    dependencies: [{
+      sourceId: "getting_approval",
+      sourceTarget: "endOfTask",
+      ownTarget: "startOfTask"
+    }],
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 3, 30), // 30-04-2025
-    end: new Date(2025, 4, 15),   // +15 days
-    name: 'Testing MVA',
-    id: 'testing_mva',
-    type: 'task',
+    start: new Date(2025, 3, 10), // 2025-04-10
+    end: new Date(2025, 3, 12),   // 2025-04-12
+    name: "Resource management",
+    id: "resource_management",
+    type: "task",
     progress: 0,
     isDisabled: false,
-    parent: 'testing',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
+    parent: "project_management",
+    dependencies: [{
+      sourceId: "team_introduction",
+      sourceTarget: "endOfTask",
+      ownTarget: "startOfTask"
+    }],
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 4, 15), // 15-05-2025
-    end: new Date(2025, 4, 25),   // +10 days
-    name: 'Beta testing',
-    id: 'beta_testing',
-    type: 'task',
+    start: new Date(2025, 3, 9), // 2025-04-09
+    end: new Date(2025, 4, 15),  // 2025-05-15
+    name: "Development",
+    id: "development",
+    type: "project",
     progress: 0,
     isDisabled: false,
-    parent: 'testing',
-    styles: { barProgressColor: '#2196F3', barProgressSelectedColor: '#2196F3' }
+    styles: {
+      barProgressColor: "#00BF96",
+      barProgressSelectedColor: "#00BF96"
+    },
+    assignees: []
   },
   {
-    start: new Date(2025, 4, 25), // 25-05-2025
-    end: new Date(2025, 4, 25),   // 0 days (milestone)
-    name: 'Release 1.0.0',
-    id: 'release',
-    type: 'milestone',
+    start: new Date(2025, 3, 9), // 2025-04-09
+    end: new Date(2025, 3, 15),  // 2025-04-15
+    name: "Prototyping",
+    id: "dev_prototyping",
+    type: "task",
+    progress: 0,
+    isDisabled: false,
+    parent: "development",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
+  },
+  {
+    start: new Date(2025, 3, 15), // 2025-04-15
+    end: new Date(2025, 3, 30),   // 2025-04-30
+    name: "Basic functionality",
+    id: "basic_functionality",
+    type: "task",
+    progress: 0,
+    isDisabled: false,
+    parent: "development",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
+  },
+  {
+    start: new Date(2025, 3, 30), // 2025-04-30
+    end: new Date(2025, 4, 15),   // 2025-05-15
+    name: "Finalizing MVA",
+    id: "finalizing_mva",
+    type: "task",
+    progress: 0,
+    isDisabled: false,
+    parent: "development",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
+  },
+  {
+    start: new Date(2025, 3, 9), // 2025-04-09
+    end: new Date(2025, 4, 25),  // 2025-05-25
+    name: "Testing",
+    id: "testing",
+    type: "project",
+    progress: 0,
+    isDisabled: false,
+    styles: {
+      barProgressColor: "#00BF96",
+      barProgressSelectedColor: "#00BF96"
+    },
+    assignees: []
+  },
+  {
+    start: new Date(2025, 3, 9), // 2025-04-09
+    end: new Date(2025, 3, 15),  // 2025-04-15
+    name: "Testing prototype",
+    id: "testing_prototype",
+    type: "task",
+    progress: 0,
+    isDisabled: false,
+    parent: "testing",
+    dependencies: [{
+      sourceId: "dev_prototyping",
+      sourceTarget: "endOfTask",
+      ownTarget: "startOfTask"
+    }],
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
+  },
+  {
+    start: new Date(2025, 3, 15), // 2025-04-15
+    end: new Date(2025, 3, 30),   // 2025-04-30
+    name: "Testing basic functionality",
+    id: "testing_basic_functionality",
+    type: "task",
+    progress: 0,
+    isDisabled: false,
+    parent: "testing",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
+  },
+  {
+    start: new Date(2025, 3, 30), // 2025-04-30
+    end: new Date(2025, 4, 15),   // 2025-05-15
+    name: "Testing MVA",
+    id: "testing_mva",
+    type: "task",
+    progress: 0,
+    isDisabled: false,
+    parent: "testing",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
+  },
+  {
+    start: new Date(2025, 4, 15), // 2025-05-15
+    end: new Date(2025, 4, 25),   // 2025-05-25
+    name: "Beta testing",
+    id: "beta_testing",
+    type: "task",
+    progress: 0,
+    isDisabled: false,
+    parent: "testing",
+    styles: {
+      barProgressColor: "#2196F3",
+      barProgressSelectedColor: "#2196F3"
+    },
+    assignees: []
+  },
+  {
+    start: new Date(2025, 4, 25), // 2025-05-25
+    end: new Date(2025, 4, 25),   // 2025-05-25
+    name: "Release 1.0.0",
+    id: "release",
+    type: "milestone",
     progress: 0,
     isDisabled: false,
     dependencies: [{
-      sourceId: 'testing_mva',
-      sourceTarget: 'endOfTask',
-      ownTarget: 'startOfTask'
+      sourceId: "testing_mva",
+      sourceTarget: "endOfTask",
+      ownTarget: "startOfTask"
     }],
-    styles: { barProgressColor: '#9C27B0', barProgressSelectedColor: '#9C27B0' }
+    styles: {
+      barProgressColor: "#9C27B0",
+      barProgressSelectedColor: "#9C27B0"
+    },
+    assignees: []
   }
 ];

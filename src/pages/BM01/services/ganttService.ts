@@ -10,8 +10,48 @@ interface NewTaskForm {
     assignees?: string[];
 }
 
+// Helper function to calculate parent task progress
+const calculateParentProgress = (tasks: Task[], parentId: string): number => {
+    // Filter out milestones and get only direct child tasks
+    const childTasks = tasks.filter(t => t.parent === parentId && t.type !== 'milestone');
+    if (childTasks.length === 0) return 0;
+
+    const totalProgress = childTasks.reduce((sum, task) => sum + task.progress, 0);
+    return Math.round(totalProgress / childTasks.length);
+};
+
+// Helper function to update all ancestor tasks' progress
+const updateAncestorsProgress = (tasks: Task[], taskId: string): Task[] => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task || !task.parent) return tasks;
+
+    const updatedTasks = [...tasks];
+    let currentParentId: string | undefined = task.parent;
+
+    while (currentParentId) {
+        const parentIndex = updatedTasks.findIndex(t => t.id === currentParentId);
+        if (parentIndex === -1) break;
+
+        const newProgress = calculateParentProgress(updatedTasks, currentParentId);
+        updatedTasks[parentIndex] = {
+            ...updatedTasks[parentIndex],
+            progress: newProgress
+        };
+
+        currentParentId = updatedTasks[parentIndex].parent;
+    }
+
+    return updatedTasks;
+};
+
 export const updateTaskProgress = (tasks: Task[], task: Task): Task[] => {
-    const updatedTasks = tasks.map((t) => {
+    // Don't update progress for milestones
+    if (task.type === 'milestone') {
+        return tasks;
+    }
+
+    // First update the task's progress
+    let updatedTasks = tasks.map((t) => {
         if (t.id === task.id) {
             return {
                 ...t,
@@ -20,6 +60,9 @@ export const updateTaskProgress = (tasks: Task[], task: Task): Task[] => {
         }
         return t;
     });
+
+    // Then update all ancestor tasks' progress
+    updatedTasks = updateAncestorsProgress(updatedTasks, task.id);
     
     // Save to localStorage
     saveTasksToStorage(updatedTasks);

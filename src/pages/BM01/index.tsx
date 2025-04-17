@@ -10,6 +10,7 @@ import NewTaskModal from './Modals/NewTaskModal';
 import '@wamra/gantt-task-react/dist/style.css';
 import './styles.css';
 import { TaskListHeader, TaskListTable } from './components/GanttCustom';
+import TooltipContent from './components/GanttTooltip';
 
 type OnArrowDoubleClick = (taskFromIndex: number, taskToIndex: number) => void;
 
@@ -288,8 +289,9 @@ const BM01: React.FC = () => {
                                     isShowChildOutOfParentWarnings={true}
                                     isShowDependencyWarnings={true}
                                     isShowTaskNumbers={true}
+                                    TooltipContent={TooltipContent}
                                     // TaskListHeader={TaskListHeader}
-                                    TaskListTable={TaskListTable}
+                                    // TaskListTable={TaskListTable}
                                 />
                             </div>
                         </div>
