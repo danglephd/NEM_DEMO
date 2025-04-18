@@ -231,7 +231,7 @@ const BM02: React.FC<RouteComponentProps> = (props) => {
                 children: selectedTaskForMenu?.assignees?.map(assigneeId => {
                     const assignee = mockAssignees[assigneeId];
                     if (!assignee) return null;
-                    
+
                     return {
                         key: `assignee-${assignee.id}`,
                         label: (
@@ -286,46 +286,44 @@ const BM02: React.FC<RouteComponentProps> = (props) => {
                 >
                     <div className="gantt-container" style={{ height: chartHeight }}>
                         <div className="gantt-scroll-container">
-                            <div>
-                                <Gantt
-                                    tasks={tasks}
-                                    viewMode={viewMode}
-                                    onDateChange={onDateChange}
-                                    onProgressChange={onProgressChange}
-                                    onDelete={handleDelete}
-                                    onDoubleClick={(task) => openDependencyModal(task)}
-                                    onArrowDoubleClick={handleArrowDoubleClick}
-                                    onAddTaskClick={handleAddTask}
-                                    onEditTaskClick={handleEditTask}
-                                    isShowCriticalPath={true}
-                                    isShowChildOutOfParentWarnings={true}
-                                    isShowDependencyWarnings={true}
-                                    isShowTaskNumbers={true}
-                                    TooltipContent={TooltipContent}
-                                    onClick={handleTaskSelect}
-                                    // TaskListHeader={TaskListHeader}
-                                    // TaskListTable={TaskListTable}
-                                />
-                            </div>
+                            <Gantt
+                                tasks={tasks}
+                                viewMode={viewMode}
+                                onDateChange={onDateChange}
+                                onProgressChange={onProgressChange}
+                                onDelete={handleDelete}
+                                onDoubleClick={(task) => openDependencyModal(task)}
+                                onArrowDoubleClick={handleArrowDoubleClick}
+                                onAddTaskClick={handleAddTask}
+                                onEditTaskClick={handleEditTask}
+                                isShowCriticalPath={true}
+                                isShowChildOutOfParentWarnings={true}
+                                isShowDependencyWarnings={true}
+                                isShowTaskNumbers={true}
+                                TooltipContent={TooltipContent}
+                                onClick={handleTaskSelect}
+                            // TaskListHeader={TaskListHeader}
+                            // TaskListTable={TaskListTable}
+                            />
                         </div>
                     </div>
                 </Card>
             </Col>
 
             {menuPosition && (
-                <Dropdown 
+                <Dropdown
                     menu={menu}
-                    open={true} 
+                    open={true}
                     onOpenChange={() => setMenuPosition(null)}
                 >
-                    <div 
-                        style={{ 
-                            position: 'fixed', 
-                            left: menuPosition.x, 
+                    <div
+                        style={{
+                            position: 'fixed',
+                            left: menuPosition.x,
                             top: menuPosition.y,
                             width: 0,
                             height: 0
-                        }} 
+                        }}
                     />
                 </Dropdown>
             )}

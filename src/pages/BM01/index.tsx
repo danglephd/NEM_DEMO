@@ -71,7 +71,7 @@ const BM01: React.FC<RouteComponentProps> = (props) => {
         // Get all tasks from storage, not just project tasks
         const storedTasks = localStorage.getItem('gantt_tasks');
         let loadedTasks: Task[] = [];
-        
+
         if (storedTasks) {
             try {
                 const parsedTasks = JSON.parse(storedTasks);
@@ -96,7 +96,7 @@ const BM01: React.FC<RouteComponentProps> = (props) => {
             const task = loadedTasks.find(t => t.id === taskId);
             if (task) {
                 setSelectedTask(task);
-                
+
                 // Function to get all child tasks recursively
                 const getAllChildTasks = (parentId: string): Task[] => {
                     const directChildren = loadedTasks.filter(t => t.parent === parentId);
@@ -252,7 +252,7 @@ const BM01: React.FC<RouteComponentProps> = (props) => {
         }
 
         setTasks(result.updatedTasks);
-        
+
         // Update filtered tasks if we're viewing a specific project
         if (taskId) {
             const task = result.updatedTasks.find(t => t.id === taskId);
@@ -340,7 +340,7 @@ const BM01: React.FC<RouteComponentProps> = (props) => {
                 children: selectedTaskForMenu?.assignees?.map(assigneeId => {
                     const assignee = mockAssignees[assigneeId];
                     if (!assignee) return null;
-                    
+
                     return {
                         key: `assignee-${assignee.id}`,
                         label: (
@@ -369,8 +369,8 @@ const BM01: React.FC<RouteComponentProps> = (props) => {
                                     - {selectedTask.name}
                                 </span>
                             )}
-                            <Button 
-                                type="link" 
+                            <Button
+                                type="link"
                                 onClick={() => history.push('/bm02')}
                             >
                                 Back to Project List
@@ -406,43 +406,41 @@ const BM01: React.FC<RouteComponentProps> = (props) => {
                 >
                     <div className="gantt-container" style={{ height: chartHeight }}>
                         <div className="gantt-scroll-container">
-                            <div>
-                                <Gantt
-                                    tasks={filteredTasks}
-                                    viewMode={viewMode}
-                                    onDateChange={onDateChange}
-                                    onProgressChange={onProgressChange}
-                                    onDelete={handleDelete}
-                                    onDoubleClick={(task) => openDependencyModal(task)}
-                                    onArrowDoubleClick={handleArrowDoubleClick}
-                                    onAddTaskClick={handleAddTask}
-                                    onEditTaskClick={handleEditTask}
-                                    isShowCriticalPath={true}
-                                    isShowChildOutOfParentWarnings={true}
-                                    isShowDependencyWarnings={true}
-                                    isShowTaskNumbers={true}
-                                    TooltipContent={TooltipContent}
-                                />
-                            </div>
+                            <Gantt
+                                tasks={filteredTasks}
+                                viewMode={viewMode}
+                                onDateChange={onDateChange}
+                                onProgressChange={onProgressChange}
+                                onDelete={handleDelete}
+                                onDoubleClick={(task) => openDependencyModal(task)}
+                                onArrowDoubleClick={handleArrowDoubleClick}
+                                onAddTaskClick={handleAddTask}
+                                onEditTaskClick={handleEditTask}
+                                isShowCriticalPath={true}
+                                isShowChildOutOfParentWarnings={true}
+                                isShowDependencyWarnings={true}
+                                isShowTaskNumbers={true}
+                                TooltipContent={TooltipContent}
+                            />
                         </div>
                     </div>
                 </Card>
             </Col>
 
             {menuPosition && (
-                <Dropdown 
+                <Dropdown
                     menu={menu}
-                    open={true} 
+                    open={true}
                     onOpenChange={() => setMenuPosition(null)}
                 >
-                    <div 
-                        style={{ 
-                            position: 'fixed', 
-                            left: menuPosition.x, 
+                    <div
+                        style={{
+                            position: 'fixed',
+                            left: menuPosition.x,
                             top: menuPosition.y,
                             width: 0,
                             height: 0
-                        }} 
+                        }}
                     />
                 </Dropdown>
             )}
